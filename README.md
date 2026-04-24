@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project demonstrates a **Software Defined Networking (SDN)** application where a controller dynamically monitors and logs network packets. The controller is built using **OS-Ken (Ryu-based framework)** and interacts with a **Mininet** topology.
+This project demonstrates a Software Defined Networking (SDN) application where a controller dynamically monitors and logs network packets. The controller is built using OS-Ken (Ryu-based framework) and interacts with a Mininet topology.
 
 The system performs:
 
