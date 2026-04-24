@@ -1,93 +1,197 @@
-# Packet Logger in Software-Defined Networking (SDN)
+# Packet Logger using SDN Controller (OS-Ken + Mininet)
 
-![Python](https://img.shields.io/badge/Python-3.x-blue)
-![Mininet](https://img.shields.io/badge/Mininet-Network%20Emulator-green)
-![SDN](https://img.shields.io/badge/SDN-OpenFlow%201.3-orange)
-![License](https://img.shields.io/badge/License-MIT-lightgrey)
+## Overview
 
----
+This project demonstrates a **Software Defined Networking (SDN)** application where a controller dynamically monitors and logs network packets. The controller is built using **OS-Ken (Ryu-based framework)** and interacts with a **Mininet** topology.
 
-##  Overview
-This project implements a **Packet Logger in a Software-Defined Networking (SDN) environment** using **Mininet** and the **OS-Ken controller**.
+The system performs:
 
-It demonstrates how a centralized controller can:
-- Monitor network traffic  
-- Log packet details in real time  
-- Dynamically manage packet forwarding using a **learning switch mechanism**
+* Dynamic MAC learning (like a switch)
+* Packet forwarding
+* Real-time logging of IPv4 traffic
+* Flow rule installation to reduce controller load
 
 ---
 
-## Objectives
-- Simulate an SDN environment  
-- Implement a learning switch using OpenFlow  
-- Log packet-level information (IP addresses)  
-- Analyze network performance under normal and lossy conditions  
+## Concept
 
----
+Traditional networks rely on hardware devices for control decisions. 
+In SDN:
 
-## Tech Stack
-- Python  
-- Mininet  
-- OS-Ken Controller (Ryu-based)  
-- OpenFlow v1.3  
-- Linux / WSL  
+* Control plane is separated from data plane
+* Controller manages the entire network logically
+* Switches act as simple forwarding devices
+
+This project uses that idea to:
+
+* Capture packets at the controller
+* Log IP-level communication
+* Learn and optimize forwarding paths
 
 ---
 
 ##  Project Structure
 
-PACKET_LOGGER_SDN/
-│── topo.py # Custom topology (3 hosts, 1 switch)
-│── packet_logger.py # SDN controller (logging + forwarding)
-│── README.md
+```
+.
+├── packet_logger.py   # SDN Controller logic
+├── topo.py            # Custom Mininet topology
+└── README.md          # Project documentation
+```
 
+---
+
+##  Requirements
+
+* Python 3.x
+* Mininet
+* OS-Ken (Ryu-based controller)
+
+Install OS-Ken:
+
+```bash
+pip install os-ken
+```
 
 ---
 
 ## Network Topology
 
-h1 -----
+* 1 Switch (`s1`)
+* 3 Hosts (`h1`, `h2`, `h3`)
+* All hosts connected to a single switch
+* Switch is cconnected to a controller
 
-h2 ------ s1 (Switch)
-/
-h3 -----/
+```
+h1 ----\
+         \
+h2 ------ s1
+         /
+h3 ----/
+```
+
+---
+
+## How to Run
+
+### Step 1: Start the Controller
+
+```bash
+ryu-manager packet_logger.py
+```
+
+---
+
+### Step 2: Start Mininet with Custom Topology
+
+```bash
+sudo mn --custom topo.py --topo packetlog --controller=remote
+```
+
+---
+
+### Step 3: Test Connectivity
+
+Inside Mininet:
+
+```bash
+mininet> h1 ping h2
+```
+
+---
+
+##  Actual Flow
+
+### 1. Switch Connection
+
+* When switch connects, controller installs a **default rule**
+* All packets are sent to controller initially
+
+---
+
+### 2. Packet Handling
+
+* Each incoming packet triggers `packet_in_handler`
+* Controller extracts:
+
+  * Source MAC
+  * Destination MAC
+  * IP addresses (if available)
+
+---
+
+### 3. MAC Learning
+
+* Controller stores:
+     MAC → Port mapping
+  
+* Works like a learning switch
+
+---
+
+### 4. Forwarding Decision
+
+* If destination MAC is known → forward directly
+* Else → flood to all ports
+
+---
+
+### 5. Logging
+
+For IPv4 packets:
+
+
+Packet: <source_ip> → <destination_ip>
 
 
 ---
 
-##  Setup Instructions
+### 6. Flow Rule Installation
 
-### Install Dependencies
-```bash
-sudo apt update
-sudo apt install mininet python3-pip -y
-pip install os-ken
+* Once path is known, controller installs flow rule
+* Future packets bypass controller → faster forwarding
 
-2️⃣ Start Controller
-ryu-manager packet_logger.py
+---
 
-3️⃣ Run Custom Topology
-sudo mn --custom topo.py --topo packetlog --controller remote
+## 📄 Key Features
 
-Testing
-🔹 Test Connectivity
-mininet> pingall
-🔹 Ping Between Hosts
-mininet> h1 ping h2
-🔹 Simulate Packet Loss (20%)
-sudo mn --topo single,3 --controller remote --link tc,loss=20
+* Dynamic MAC learning
+* Real-time packet logging
+* Reduced controller overhead using flow rules
+* Simple and scalable topology
+* Works with OpenFlow 1.3
 
-Sample Outputs:
-1.Packet Logs (Controller)
-    Packet: 10.0.0.1 → 10.0.0.2
-    Packet: 10.0.0.2 → 10.0.0.1
-2.Ping Results
-     7 packets transmitted, 3 received, 57% packet loss
-rtt min/avg/max/mdev = 0.156/0.310/0.613/0.214 ms
+---
 
-Features:
-Real-time packet logging
-MAC learning (learning switch)
-Dynamic flow rule installation
-Flooding for unknown destinations
-Packet loss simulation & analysis
+##  Sample Output
+
+Controller logs:
+
+Packet: 10.0.0.1 → 10.0.0.2
+Packet: 10.0.0.2 → 10.0.0.1
+
+
+Mininet output:
+
+3 packets transmitted, 3 received, 0% packet loss
+
+
+---
+
+## Observations
+
+* First packet is slower due to controller involvement
+* Subsequent packets are faster due to flow rules
+* Flooding occurs only when destination is unknown
+* Network becomes efficient over time
+
+---
+
+
+---
+
+## 🏁 Conclusion
+
+This project shows how SDN enables centralized control and visibility in a network. By using a controller-based approach, we can monitor traffic, learn network behavior, and optimize packet forwarding dynamically. It highlights the flexibility and power of SDN compared to traditional networking.
+
+---
