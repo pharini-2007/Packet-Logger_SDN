@@ -162,6 +162,7 @@ Packet: <source_ip> → <destination_ip>
 Controller logs:
 
 Packet: 10.0.0.1 → 10.0.0.2
+
 Packet: 10.0.0.2 → 10.0.0.1
 
 
