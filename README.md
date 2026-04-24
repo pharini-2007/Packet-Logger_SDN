@@ -75,28 +75,22 @@ h3 ----/
 ## How to Run
 
 ### Step 1: Start the Controller
+               ryu-manager packet_logger.py
 
-```bash
-ryu-manager packet_logger.py
-```
 
 ---
 
 ### Step 2: Start Mininet with Custom Topology
+               sudo mn --custom topo.py --topo packetlog --controller=remote
 
-```bash
-sudo mn --custom topo.py --topo packetlog --controller=remote
-```
 
 ---
 
 ### Step 3: Test Connectivity
 
-Inside Mininet:
+               Inside Mininet:
+                      mininet> h1 ping h2
 
-```bash
-mininet> h1 ping h2
-```
 
 ---
 
