@@ -1,4 +1,4 @@
-# 📡 Packet Logger in Software-Defined Networking (SDN)
+# Packet Logger in Software-Defined Networking (SDN)
 
 ![Python](https://img.shields.io/badge/Python-3.x-blue)
 ![Mininet](https://img.shields.io/badge/Mininet-Network%20Emulator-green)
@@ -7,7 +7,7 @@
 
 ---
 
-## 📌 Overview
+##  Overview
 This project implements a **Packet Logger in a Software-Defined Networking (SDN) environment** using **Mininet** and the **OS-Ken controller**.
 
 It demonstrates how a centralized controller can:
@@ -17,7 +17,7 @@ It demonstrates how a centralized controller can:
 
 ---
 
-## 🎯 Objectives
+## Objectives
 - Simulate an SDN environment  
 - Implement a learning switch using OpenFlow  
 - Log packet-level information (IP addresses)  
@@ -25,7 +25,7 @@ It demonstrates how a centralized controller can:
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 - Python  
 - Mininet  
 - OS-Ken Controller (Ryu-based)  
@@ -34,7 +34,7 @@ It demonstrates how a centralized controller can:
 
 ---
 
-## 📂 Project Structure
+##  Project Structure
 
 PACKET_LOGGER_SDN/
 │── topo.py # Custom topology (3 hosts, 1 switch)
@@ -44,7 +44,7 @@ PACKET_LOGGER_SDN/
 
 ---
 
-## 🌐 Network Topology
+## Network Topology
 
 h1 -----
 
@@ -55,32 +55,37 @@ h3 -----/
 
 ---
 
-## ⚙️ Setup Instructions
+##  Setup Instructions
 
-### 1️⃣ Install Dependencies
+### Install Dependencies
 ```bash
 sudo apt update
 sudo apt install mininet python3-pip -y
 pip install os-ken
+
 2️⃣ Start Controller
 ryu-manager packet_logger.py
+
 3️⃣ Run Custom Topology
 sudo mn --custom topo.py --topo packetlog --controller remote
-🧪 Testing
+
+Testing
 🔹 Test Connectivity
 mininet> pingall
 🔹 Ping Between Hosts
 mininet> h1 ping h2
 🔹 Simulate Packet Loss (20%)
 sudo mn --topo single,3 --controller remote --link tc,loss=20
-📊 Sample Outputs
-📌 Packet Logs (Controller)
-Packet: 10.0.0.1 → 10.0.0.2
-Packet: 10.0.0.2 → 10.0.0.1
-📌 Ping Results
-7 packets transmitted, 3 received, 57% packet loss
+
+Sample Outputs:
+1.Packet Logs (Controller)
+    Packet: 10.0.0.1 → 10.0.0.2
+    Packet: 10.0.0.2 → 10.0.0.1
+2.Ping Results
+     7 packets transmitted, 3 received, 57% packet loss
 rtt min/avg/max/mdev = 0.156/0.310/0.613/0.214 ms
-⚡ Features
+
+Features:
 Real-time packet logging
 MAC learning (learning switch)
 Dynamic flow rule installation
