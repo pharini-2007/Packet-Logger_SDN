@@ -65,7 +65,7 @@ pip install os-ken
 ```
 h1 ----\
          \
-h2 ------ s1
+h2 ------ s1 ----controller 
          /
 h3 ----/
 ```
