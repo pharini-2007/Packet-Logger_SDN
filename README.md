@@ -147,7 +147,7 @@ Packet: <source_ip> → <destination_ip>
 
 ---
 
-## 📄 Key Features
+##  Key Features
 
 * Dynamic MAC learning
 * Real-time packet logging
