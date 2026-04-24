@@ -184,7 +184,7 @@ Mininet output:
 
 ---
 
-## 🏁 Conclusion
+## Conclusion
 
 This project shows how SDN enables centralized control and visibility in a network. By using a controller-based approach, we can monitor traffic, learn network behavior, and optimize packet forwarding dynamically. It highlights the flexibility and power of SDN compared to traditional networking.
 
